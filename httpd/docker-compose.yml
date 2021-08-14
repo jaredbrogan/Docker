@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  apache:
+    image: 'bitnami/apache:latest'
+    ports:
+      - '8080:8080'
+      - '8443:8443'
+    networks:
+      - httpd_net
+    volumes:
+      - /docker/httpd/web:/web
+      - /docker/httpd/web/server/${STACK_DOMAIN}_${STACK_COLOR}_info.json:/web/server/stack_info.json
+      - /docker/httpd/web/rundeck/${STACK_DOMAIN}_${STACK_COLOR}_info.json:/web/rundeck/stack_info.json
+    configs:
+      - source: web_8080.conf
+        target: /vhosts/web_8080.conf
+
+
+networks:
+        httpd_net:
+            driver: overlay
+            driver_opts:
+                encrypted: "true"
+
+configs:
+  web_8080.conf:
+    external: true
