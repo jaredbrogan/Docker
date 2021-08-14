@@ -1,0 +1,38 @@
+name: Feature Request
+description: File a feature request
+title: "[Request]: "
+labels: [request, enhancement]
+assignees:
+  - jaredbrogan
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this feature request!
+  - type: input
+    id: contact
+    attributes:
+      label: Contact Details
+      description: How can we get in touch with you if we need more info?
+      placeholder: ex. email@example.com
+    validations:
+      required: false
+  - type: textarea
+    id: how-should-we-improve
+    attributes:
+      label: How should we improve?
+      description: Also tell us, how will this enhancement prove to be beneficial?
+      placeholder: Tell us what you want!
+      value: "I have an idea!"
+    validations:
+      required: true
+  - type: dropdown
+    id: browsers
+    attributes:
+      label: What priority would you give this request?
+      multiple: true
+      options:
+        - Low
+        - Medium
+        - High
+        - Critical

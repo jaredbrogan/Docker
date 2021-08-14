@@ -1,0 +1,27 @@
+name: Question Submission
+description: Ask a question about this project
+title: "[Question]: "
+labels: [question]
+assignees:
+  - jaredbrogan
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Submit a clear and concise question about the project. Ex. Why does this occur when [...]?
+  - type: input
+    id: contact
+    attributes:
+      label: Contact Details
+      description: How can we get in touch with you if we need more info?
+      placeholder: ex. email@example.com
+    validations:
+      required: false
+  - type: textarea
+    id: whats-up
+    attributes:
+      label: What's up?
+      placeholder: Tell us something!
+      value: "I have thoughts AND concerns!"
+    validations:
+      required: true
