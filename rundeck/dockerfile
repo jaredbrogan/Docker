@@ -1,0 +1,31 @@
+FROM rundeck/rundeck:SNAPSHOT
+
+USER root
+
+# Install Powershell, Python, Netcat, Rundeck CLI
+RUN curl -s https://packagecloud.io/install/repositories/pagerduty/rundeck/script.deb.sh | os=any dist=any bash && \
+    wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb && \
+    sudo dpkg -i packages-microsoft-prod.deb && \
+    sudo apt-get update && \
+    sudo apt-get install --no-install-recommends -y \
+    netcat \
+    python-pip \
+    powershell \
+    rundeck-cli && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN pip install --upgrade pip && \
+    pip install pywinrm
+
+USER rundeck
+
+SHELL ["/usr/bin/pwsh", "-c"]
+RUN Find-Module -Name VMware.PowerCLI ; \
+    Install-Module -Name VMware.PowerCLI -Confirm:$false -AllowClobber -Force ; \
+    Set-PowerCLIConfiguration -InvalidCertificateAction ignore -confirm:$false ; \
+    Set-PowerCLIConfiguration -Scope User -ParticipateInCEIP $false -Confirm:$false
+	
+	
+	
+	apt-get -y install python3-pip
+	pip3 install --upgrade pip && pip3 install pywinrm
