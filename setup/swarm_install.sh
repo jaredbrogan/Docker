@@ -173,7 +173,7 @@ add_repo(){
 	echo "Adding docker repository..."
 	if [ ! -f /etc/yum.repos.d/docker-ce.repo ]; then
     echo "Local copy of repo not found cloning from github..."
-		wget -O /etc/yum.repos.d/docker-ce.repo https://raw.githubusercontent.com/jaredbrogan/Docker/main/docker-ce.repo
+		wget -O /etc/yum.repos.d/docker-ce.repo https://raw.githubusercontent.com/jaredbrogan/Docker/main/setup/docker-ce.repo
 		wait
 		yum-config-manager --add-repo /etc/yum.repos.d/docker-ce.repo
 	fi
