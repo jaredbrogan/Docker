@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>Docker</short>
+  <description>Docker is a set of platform as a service products that use OS-level virtualization to deliver software in packages called containers.</description>
+  <port protocol="tcp" port="2376"/>
+  <port protocol="tcp" port="2377"/>
+  <port protocol="tcp" port="7946"/>
+  <port protocol="udp" port="7946"/>
+  <port protocol="udp" port="4789"/>
+</service>

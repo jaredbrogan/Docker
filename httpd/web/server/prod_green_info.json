@@ -1,0 +1,5 @@
+{
+   "domain":"prod",
+   "stack":"green",
+   "container":"httpd"
+}

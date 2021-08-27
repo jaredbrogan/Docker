@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+    rundeck:
+        image: ypb5wmitoy7geidwhngu/rundeck:mod
+        deploy:
+            replicas: 1
+            restart_policy:
+                condition: on-failure
+        environment:
+            RUNDECK_GRAILS_URL: <INSERT CUSTOM URL HERE>
+            RUNDECK_SERVER_CONTEXTPATH: /rundeck
+            RUNDECK_SERVER_FORWARDED: "true"
+            RUNDECK_SERVER_PORT: 4440
+            RUNDECK_SECURITY_HTTPHEADERS_ENABLED: "true"
+            RUNDECK_SECURITY_HTTPHEADERS_PROVIDER_XCTO_ENABLED: "true"
+            RUNDECK_SECURITY_HTTPHEADERS_PROVIDER_XXSSP_ENABLED: "true"
+            RUNDECK_SECURITY_HTTPHEADERS_PROVIDER_XFO_ENABLED: "true"
+            RUNDECK_SECURITY_HTTPHEADERS_PROVIDER_CSP_ENABLED: "false"
+            RUNDECK_SECURITY_HTTPHEADERS_PROVIDER_CSP_CONFIG_INCLUDEXCSPHEADER: "false"
+            RUNDECK_SECURITY_HTTPHEADERS_PROVIDER_CSP_CONFIG_INCLUDEXWKCSPHEADER: "false"
+            RUNDECK_JAAS_MODULES_0: JettyCombinedLdapLoginModule
+            RUNDECK_JAAS_LDAP_FLAG: sufficient
+            RUNDECK_JAAS_LDAP_PROVIDERURL: ldap://<INSERT DOMAIN>:389
+            RUNDECK_JAAS_LDAP_BINDDN: <INSERT SVC ACCOUNT>
+            RUNDECK_JAAS_LDAP_BINDPASSWORD: <INSERT SVC ACCOUNT PASSWORD>
+            RUNDECK_JAAS_LDAP_USERRDNATTRIBUTE: sAMAccountName
+            RUNDECK_JAAS_LDAP_USERIDATTRIBUTE: sAMAccountName
+            RUNDECK_JAAS_LDAP_USERBASEDN: <INSERT BASE DN>
+            RUNDECK_JAAS_LDAP_ROLEMEMBERATTRIBUTE: member
+            RUNDECK_JAAS_LDAP_ROLEOBJECTCLASS: group
+            RUNDECK_JAAS_LDAP_ROLEBASEDN: <INSERT BASE DN>
+            RUNDECK_JAAS_MODULES_1: PropertyFileLoginModule
+            RUNDECK_JAAS_FILE_FLAG: sufficient
+            RUNDECK_DATABASE_DRIVER: org.mariadb.jdbc.Driver
+            RUNDECK_DATABASE_USERNAME: rundeck
+            RUNDECK_DATABASE_PASSWORD: <INSERT PASSWORD>
+            RUNDECK_DATABASE_URL: jdbc:mysql://mysql/rundeck?autoReconnect=true&useSSL=false
+        tty: true
+        networks:
+            - rundeck_net
+        volumes:
+            - /docker/rundeck/realm.properties:/home/rundeck/server/config/realm.properties
+            - /docker/rundeck/projects:/home/rundeck/projects
+        ports:
+            - 4440:4440
+    mysql:
+        image: mysql:5.7
+        deploy:
+            replicas: 1
+            restart_policy:
+                condition: on-failure
+        environment:
+            MYSQL_ROOT_PASSWORD: <INSERT PASSWORD>
+            MYSQL_DATABASE: rundeck
+            MYSQL_USER: rundeck
+            MYSQL_PASSWORD: <INSERT PASSWORD>
+        networks:
+            - rundeck_net
+        volumes:
+            - /docker/mysql:/var/lib/mysql
+
+networks:
+        rundeck_net:
+            driver: overlay
+            driver_opts:
+                encrypted: "true"

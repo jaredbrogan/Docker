@@ -1,0 +1,5 @@
+{
+   "domain":"prod",
+   "stack":"blue",
+   "container":"rundeck"
+}
