@@ -1,0 +1,26 @@
+version: '3.8'
+
+# More info at https://containrrr.dev/watchtower
+
+services:
+  watchtower:
+    container_name: watchtower
+    image: containrrr/watchtower:latest
+    environment:
+      WATCHTOWER_CLEANUP: 'true'
+      WATCHTOWER_SCHEDULE: '0 0 4 * * *'
+        # Runs at 4am every day
+        # Uses the 6 field version of Cron: https://crontab.cronhub.io/
+      WATCHTOWER_LABEL_ENABLE: 'false'
+      WATCHTOWER_ROLLING_RESTART: 'true'
+      WATCHTOWER_NOTIFICATIONS: 'email'
+      WATCHTOWER_NOTIFICATION_EMAIL_FROM: '<INSERT EMAIL ADDRESS>'
+      WATCHTOWER_NOTIFICATION_EMAIL_TO: '<INSERT EMAIL ADDRESS>'
+      WATCHTOWER_NOTIFICATION_EMAIL_SERVER: 'smtp.gmail.com'
+      WATCHTOWER_NOTIFICATION_EMAIL_SERVER_USER: '<INSERT EMAIL ADDRESS>'
+      WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PASSWORD: '<INSERT APP PASSWORD>'
+        # For Gmail accounts, you'll need to create an app password: https://support.google.com/accounts/answer/185833
+      WATCHTOWER_NOTIFICATION_EMAIL_DELAY: '10'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/localtime:/etc/localtime:ro

@@ -1,0 +1,20 @@
+version: '3.8'
+
+# More info at https://github.com/pi-hole/docker-pi-hole/ and https://docs.pi-hole.net/
+
+services:
+  pi-hole:
+    container_name: pi-hole
+    image: pihole/pihole:latest
+    network_mode: 'host'
+    environment:
+      TZ: 'America/Chicago'
+      WEBPASSWORD: '<INSERT PASSWORD HERE>'
+      WEB_PORT: '9080'
+      DNSMASQ_LISTENING: 'local'
+    volumes:
+      - /volume1/docker/pi-hole:/etc/pi-hole
+      - /volume1/docker/dnsmasq:/etc/dnsmasq.d
+    cap_add:    # https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
+      - NET_ADMIN   # Recommended but not required (DHCP needs NET_ADMIN)      
+    restart: unless-stopped
