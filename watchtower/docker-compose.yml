@@ -7,9 +7,9 @@ services:
     container_name: watchtower
     image: containrrr/watchtower:latest
     environment:
-      WATCHTOWER_CLEANUP: true
-      WATCHTOWER_LABEL_ENABLE: false
-      WATCHTOWER_ROLLING_RESTART: true
+      WATCHTOWER_CLEANUP: 'true'
+      WATCHTOWER_LABEL_ENABLE: 'false'
+      WATCHTOWER_ROLLING_RESTART: 'true'
       WATCHTOWER_NOTIFICATION_EMAIL_FROM: '<INSERT EMAIL ADDRESS>'
       WATCHTOWER_NOTIFICATION_EMAIL_TO: '<INSERT EMAIL ADDRESS>'
       WATCHTOWER_NOTIFICATION_EMAIL_SERVER: 'smtp.gmail.com'
