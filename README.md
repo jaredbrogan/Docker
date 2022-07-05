@@ -5,6 +5,9 @@ Various tools utilized personally, powered by Docker.
 
 List of current containerized tools:
 * Portainer
+* Home Assistant
+* Pi-hole
+* Watchtower
 * Rundeck
   * MySQL
   * PowerCLI
