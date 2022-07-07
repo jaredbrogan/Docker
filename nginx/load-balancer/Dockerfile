@@ -1,3 +1,4 @@
 FROM nginx:alpine
 
-RUN rm /etc/nginx/conf.d/default.conf
+RUN apt update && apt upgrade -y && apt install iputils-ping -y
+RUN rm -fv /etc/nginx/conf.d/default.conf
