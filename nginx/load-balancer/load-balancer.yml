@@ -1,0 +1,14 @@
+version: '3.8'
+
+# More info at https://github.com/nginxinc/docker-nginx and https://www.nginx.com/
+
+services:
+  load-balancer:
+    container_name: load-balancer
+    image: nginx:latest
+    environment:
+      - NGINX_HOST: '<INSERT HOSTNAME>'
+      - NGINX_PORT: '8040'
+    volumes:
+      - /volume1/docker/nginx/templates:/etc/nginx/templates    
+    restart: unless-stopped
