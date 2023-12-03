@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  nordvpn:
+    container_name: Gluetun-Nord_VPN
+      # line above must be uncommented to allow external containers to connect.
+      # See https://github.com/qdm12/gluetun-wiki/blob/main/setup/connect-a-container-to-gluetun.md#external-container-to-gluetun
+    image: qmcgaw/gluetun
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - "8089:8089" # QbitTorrent UI
+      - "9092:9091" # Transmission
+      - "51413:51413" # Transmision
+      - "51413:51413/udp" # Transmision
+      - "51420:51420" # QbitTorrent
+      - "51420:51420/udp" # QbitTorrent
+    environment:
+      - VPN_SERVICE_PROVIDER=nordvpn
+      - OPENVPN_USER=NordVPN_USer_ID_from_Dashboard
+      - OPENVPN_PASSWORD=NordVPN_Password_from_Dashboard
+      - SERVER_REGIONS=America
+      - SERVER_COUNTRIES="United States"
+      - VPN_TYPE=openvpn
+    restart: always
+  qbittorrent:
+    image: linuxserver/qbittorrent:4.5.2
+    network_mode: "service:nordvpn"
+    container_name: QbitTorrent-Nord
+    depends_on:
+      - nordvpn
+    environment:
+      - WEBUI_PORT=8089
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Toronto
+    volumes:
+      - "/DATA/AppData/qBittorrent-VPN/config:/config"
+      - "/media/HardDrive/Downloads/QBitTorrent:/downloads"
+    restart: always
+  transmission:
+    image: ghcr.io/linuxserver/transmission:4.0.2
+    network_mode: "service:nordvpn"
+    container_name: Transmission-Nord
+    depends_on:
+      - nordvpn
+    environment:
+      - PUID=1000
+      - PGID=10000
+      - TZ=America/Toronto
+    volumes:
+      - "/DATA/AppData/Transmission-VPN/config:/config"
+      - "/media/HardDrive/Downloads/Transmission:/downloads"
+      - "/media/HardDrive/Downloads/Transmission/watch:/watch"
+    restart: always
